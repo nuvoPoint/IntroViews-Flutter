@@ -39,23 +39,27 @@ class Page extends StatelessWidget {
 
   /// when device is Portrait place title, image and body in a column
   Widget _buildPortraitPage() {
-    return Column(
-      mainAxisAlignment: columnMainAxisAlignment,
-      mainAxisSize: MainAxisSize.max,
-      children: <Widget>[
-        Expanded(
-          child: _ImagePageTransform(
-            percentVisible: percentVisible,
-            pageViewModel: pageViewModel,
-          ),
-        ), //Transform
-        Flexible(
-          child: _BodyPageTransform(
-            percentVisible: percentVisible,
-            pageViewModel: pageViewModel,
-          ),
-        ), //Transform
-      ],
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: columnMainAxisAlignment,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Expanded(
+              child: _ImagePageTransform(
+                percentVisible: percentVisible,
+                pageViewModel: pageViewModel,
+              ),
+            ), //Transform
+            Flexible(
+              child: _BodyPageTransform(
+                percentVisible: percentVisible,
+                pageViewModel: pageViewModel,
+              ),
+            ), //Transform
+          ],
+        ),
+      ),
     );
   }
 
