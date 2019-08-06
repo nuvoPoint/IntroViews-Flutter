@@ -17,13 +17,6 @@ class PageViewModel {
   /// @Default `const Color(0x88FFFFFF)`
   final Color bubbleBackgroundColor;
 
-  /// widget for the title
-  ///
-  /// _typicaly a Text Widget_
-  ///
-  /// @Default Textstyle `color: Colors.white , fontSize: 50.0`
-  final Widget title;
-
   /// widget for the body
   ///
   /// _typicaly a Text Widget_
@@ -46,16 +39,20 @@ class PageViewModel {
   /// gets overriden by [iconImageAssetPath]
   final Widget bubble;
 
-  PageViewModel(
-      {this.pageColor,
-      this.iconImageAssetPath,
-      this.bubbleBackgroundColor = const Color(0x88FFFFFF),
-      this.iconColor,
-      @required this.title,
-      @required this.body,
-      @required this.mainImage,
-      this.bubble,
-      this.textStyle});
+  final bool singleColumn;
+
+  PageViewModel({
+    this.pageColor,
+    this.iconImageAssetPath,
+    this.bubbleBackgroundColor = const Color(0x88FFFFFF),
+    this.iconColor,
+    // Widget title,
+    @required this.body,
+    @required this.mainImage,
+    this.bubble,
+    this.textStyle,
+    this.singleColumn = false,
+  });
 
   TextStyle get titleTextStyle {
     return TextStyle(color: Colors.white, fontSize: 50.0).merge(this.textStyle);

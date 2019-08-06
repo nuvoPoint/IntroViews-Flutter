@@ -125,14 +125,12 @@ class IntroViewsFlutter extends StatefulWidget {
 /// State of above widget.
 /// It extends the TickerProviderStateMixin as it is used for animation control (vsync).
 
-class _IntroViewsFlutterState extends State<IntroViewsFlutter>
-    with TickerProviderStateMixin {
+class _IntroViewsFlutterState extends State<IntroViewsFlutter> with TickerProviderStateMixin {
   StreamController<SlideUpdate>
       // ignore: close_sinks
       slideUpdateStream; //Stream controller is used to get all the updates when user slides across screen.
 
-  AnimatedPageDragger
-      animatedPageDragger; //When user stops dragging then by using this page automatically drags.
+  AnimatedPageDragger animatedPageDragger; //When user stops dragging then by using this page automatically drags.
 
   int activePageIndex = 0; //active page index
   int nextPageIndex = 0; //next page index
@@ -232,9 +230,8 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
     List<PageViewModel> pages = widget.pages;
 
     return Scaffold(
-      //Stack is used to place components over one another.
-      resizeToAvoidBottomPadding: false,
       backgroundColor: widget.background,
+      //Stack is used to place components over one another.
       body: Stack(
         children: <Widget>[
           Page(
@@ -250,7 +247,6 @@ class _IntroViewsFlutterState extends State<IntroViewsFlutter>
                 percentVisible: slidePercent,
                 columnMainAxisAlignment: widget.columnMainAxisAlignment),
           ), //PageReveal
-
           PagerIndicator(
             //bottom page indicator
             viewModel: PagerIndicatorViewModel(
