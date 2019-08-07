@@ -27,8 +27,7 @@ class Page extends StatelessWidget {
         opacity: percentVisible,
         child: LayoutBuilder(builder: (context, _) {
           // We use MediaQuery because OrientationBuilder is buggy.
-          final portrait =
-              (MediaQuery.of(context).orientation == Orientation.portrait || pageViewModel.singleColumn ? 1 : 2) == 1;
+          final portrait = MediaQuery.of(context).orientation == Orientation.portrait || pageViewModel.singleColumn;
 
           return portrait ? _buildPortraitPage() : _buildLandscapePage();
         }),

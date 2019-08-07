@@ -24,12 +24,10 @@ class DefaultButton extends StatelessWidget {
     //Calculating opacity to create a fade in effect
     double opacity = 1.0;
     final TextStyle style = DefaultTextStyle.of(context).style;
-    if (pageButtonViewModel.activePageIndex ==
-            pageButtonViewModel.totalPages - 2 &&
+    if (pageButtonViewModel.activePageIndex == pageButtonViewModel.totalPages - 2 &&
         pageButtonViewModel.slideDirection == SlideDirection.rightToLeft) {
       opacity = 1.0 - pageButtonViewModel.slidePercent;
-    } else if (pageButtonViewModel.activePageIndex ==
-            pageButtonViewModel.totalPages - 1 &&
+    } else if (pageButtonViewModel.activePageIndex == pageButtonViewModel.totalPages - 1 &&
         pageButtonViewModel.slideDirection == SlideDirection.leftToRight) {
       opacity = pageButtonViewModel.slidePercent;
     }
@@ -69,8 +67,7 @@ class DoneButton extends StatelessWidget {
     //Calculating opacity so as to create a fade in effect
     double opacity = 1.0;
     final TextStyle style = DefaultTextStyle.of(context).style;
-    if (pageButtonViewModel.activePageIndex ==
-            pageButtonViewModel.totalPages - 1 &&
+    if (pageButtonViewModel.activePageIndex == pageButtonViewModel.totalPages - 1 &&
         pageButtonViewModel.slideDirection == SlideDirection.leftToRight) {
       opacity = 1.0 - pageButtonViewModel.slidePercent;
     }
@@ -112,8 +109,7 @@ class PageIndicatorButtons extends StatelessWidget {
 
   Widget _getDoneORNextButton() {
     if ((activePageIndex < totalPages - 1 ||
-            (activePageIndex == totalPages - 1 &&
-                slideDirection == SlideDirection.leftToRight)) &&
+            (activePageIndex == totalPages - 1 && slideDirection == SlideDirection.leftToRight)) &&
         showNextButton) {
       return DefaultButton(
         child: nextText,
@@ -127,9 +123,9 @@ class PageIndicatorButtons extends StatelessWidget {
         ),
       );
     } else if (activePageIndex == totalPages - 1 ||
-        (activePageIndex == totalPages - 2 &&
-                slideDirection == SlideDirection.rightToLeft ||
-            doneButtonPersist)) {
+        (activePageIndex == totalPages - 2 && slideDirection == SlideDirection.rightToLeft || doneButtonPersist)) {
+      if (onPressedDoneButton == null) return Container();
+
       return DoneButton(
         child: doneText,
         onTap: onPressedDoneButton,
@@ -147,9 +143,7 @@ class PageIndicatorButtons extends StatelessWidget {
   }
 
   Widget _getSkipORBackButton() {
-    if (activePageIndex <= totalPages &&
-        activePageIndex >= 1 &&
-        showBackButton) {
+    if (activePageIndex <= totalPages && activePageIndex >= 1 && showBackButton) {
       return DefaultButton(
         child: backText,
         onTap: onPressedBackButton,
@@ -161,10 +155,7 @@ class PageIndicatorButtons extends StatelessWidget {
           slideDirection: slideDirection,
         ),
       );
-    } else if ((activePageIndex < totalPages - 1 ||
-            (activePageIndex == totalPages - 1 &&
-                slideDirection == SlideDirection.leftToRight)) &&
-        showSkipButton) {
+    } else if (showSkipButton && activePageIndex == 0) {
       return DefaultButton(
         child: skipText,
         onTap: onPressedSkipButton,
@@ -214,13 +205,9 @@ class PageIndicatorButtons extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: _getSkipORBackButton() //Row
+            Padding(padding: const EdgeInsets.only(bottom: 10.0), child: _getSkipORBackButton() //Row
                 ), //Padding
-            Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: _getDoneORNextButton() //Row
+            Padding(padding: const EdgeInsets.only(bottom: 10.0), child: _getDoneORNextButton() //Row
                 )
           ],
         ),
