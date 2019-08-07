@@ -22,8 +22,8 @@ class Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8.0),
-      width: double.infinity,
+      // padding: const EdgeInsets.all(8.0),
+      // width: double.infinity,
       color: pageViewModel.pageColor,
       child: Opacity(
         //Opacity is used to create fade in effect
@@ -39,28 +39,58 @@ class Page extends StatelessWidget {
 
   /// when device is Portrait place title, image and body in a column
   Widget _buildPortraitPage() {
-    return Center(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: columnMainAxisAlignment,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Expanded(
-              child: _ImagePageTransform(
-                percentVisible: percentVisible,
-                pageViewModel: pageViewModel,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minWidth: constraints.maxWidth, minHeight: constraints.maxHeight),
+            child: IntrinsicHeight(
+              child: Column(
+                mainAxisAlignment: columnMainAxisAlignment,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Flexible(
+                    child: _ImagePageTransform(
+                      percentVisible: percentVisible,
+                      pageViewModel: pageViewModel,
+                    ),
+                  ), //Transform
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 32.0),
+                      child: _BodyPageTransform(
+                        percentVisible: percentVisible,
+                        pageViewModel: pageViewModel,
+                      ),
+                    ),
+                  ), //Transform
+                ],
               ),
-            ), //Transform
-            Flexible(
-              child: _BodyPageTransform(
-                percentVisible: percentVisible,
-                pageViewModel: pageViewModel,
-              ),
-            ), //Transform
-          ],
-        ),
-      ),
+            ),
+          ),
+        );
+      },
     );
+    // return SingleChildScrollView(
+    //   child: Column(
+    //     mainAxisAlignment: columnMainAxisAlignment,
+    //     mainAxisSize: MainAxisSize.max,
+    //     children: <Widget>[
+    //       Expanded(
+    //         child: _ImagePageTransform(
+    //           percentVisible: percentVisible,
+    //           pageViewModel: pageViewModel,
+    //         ),
+    //       ), //Transform
+    //       Flexible(
+    //         child: _BodyPageTransform(
+    //           percentVisible: percentVisible,
+    //           pageViewModel: pageViewModel,
+    //         ),
+    //       ), //Transform
+    //     ],
+    //   ),
+    // );
   }
 
   /// if Device is Landscape reorder with row and column
@@ -109,7 +139,7 @@ class _BodyPageTransform extends StatelessWidget {
       transform: Matrix4.translationValues(0.0, 30.0 * (1 - percentVisible), 0.0),
       child: Padding(
         padding: const EdgeInsets.only(
-          bottom: 75.0,
+          // bottom: 75.0,
           left: 10.0,
           right: 10.0,
         ),
