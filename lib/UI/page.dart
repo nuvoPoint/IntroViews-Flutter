@@ -22,100 +22,66 @@ class Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // padding: const EdgeInsets.all(8.0),
-      // width: double.infinity,
       color: pageViewModel.pageColor,
       child: Opacity(
-        //Opacity is used to create fade in effect
         opacity: percentVisible,
-        child: OrientationBuilder(builder: (context, orientation) {
-          return orientation == Orientation.portrait || pageViewModel.singleColumn
-              ? _buildPortraitPage()
-              : _buildLandscapePage();
-        }), //OrientationBuilder
+        child: _buildPage(),
       ),
     );
   }
 
-  /// when device is Portrait place title, image and body in a column
-  Widget _buildPortraitPage() {
+  Widget _buildPage() {
     return LayoutBuilder(
       builder: (context, constraints) {
+        final orientation = MediaQuery.of(context).orientation == Orientation.portrait || pageViewModel.singleColumn ? 1 : 2;
         return SingleChildScrollView(
           child: ConstrainedBox(
             constraints: BoxConstraints(minWidth: constraints.maxWidth, minHeight: constraints.maxHeight),
             child: IntrinsicHeight(
-              child: Column(
-                mainAxisAlignment: columnMainAxisAlignment,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Flexible(
-                    child: _ImagePageTransform(
-                      percentVisible: percentVisible,
-                      pageViewModel: pageViewModel,
+              child: orientation == 1
+                  ? Column(
+                      mainAxisAlignment: columnMainAxisAlignment,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Flexible(
+                          child: _ImagePageTransform(
+                            percentVisible: percentVisible,
+                            pageViewModel: pageViewModel,
+                          ),
+                        ),
+                        Flexible(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 32.0),
+                            child: _BodyPageTransform(
+                              percentVisible: percentVisible,
+                              pageViewModel: pageViewModel,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        Expanded(
+                          child: _ImagePageTransform(
+                            percentVisible: percentVisible,
+                            pageViewModel: pageViewModel,
+                          ),
+                        ),
+                        Expanded(
+                          child: _BodyPageTransform(
+                            percentVisible: percentVisible,
+                            pageViewModel: pageViewModel,
+                          ),
+                        ),
+                      ],
                     ),
-                  ), //Transform
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 32.0),
-                      child: _BodyPageTransform(
-                        percentVisible: percentVisible,
-                        pageViewModel: pageViewModel,
-                      ),
-                    ),
-                  ), //Transform
-                ],
-              ),
             ),
           ),
         );
       },
-    );
-    // return SingleChildScrollView(
-    //   child: Column(
-    //     mainAxisAlignment: columnMainAxisAlignment,
-    //     mainAxisSize: MainAxisSize.max,
-    //     children: <Widget>[
-    //       Expanded(
-    //         child: _ImagePageTransform(
-    //           percentVisible: percentVisible,
-    //           pageViewModel: pageViewModel,
-    //         ),
-    //       ), //Transform
-    //       Flexible(
-    //         child: _BodyPageTransform(
-    //           percentVisible: percentVisible,
-    //           pageViewModel: pageViewModel,
-    //         ),
-    //       ), //Transform
-    //     ],
-    //   ),
-    // );
-  }
-
-  /// if Device is Landscape reorder with row and column
-  Widget _buildLandscapePage() {
-    return Center(
-      child: SingleChildScrollView(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Expanded(
-              child: _ImagePageTransform(
-                percentVisible: percentVisible,
-                pageViewModel: pageViewModel,
-              ),
-            ), //Transform
-            Expanded(
-              child: _BodyPageTransform(
-                percentVisible: percentVisible,
-                pageViewModel: pageViewModel,
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
