@@ -25,63 +25,73 @@ class Page extends StatelessWidget {
       color: pageViewModel.pageColor,
       child: Opacity(
         opacity: percentVisible,
-        child: _buildPage(),
+        child: LayoutBuilder(builder: (context, _) {
+          // We use MediaQuery because OrientationBuilder is buggy.
+          final portrait =
+              (MediaQuery.of(context).orientation == Orientation.portrait || pageViewModel.singleColumn ? 1 : 2) == 1;
+
+          return portrait ? _buildPortraitPage() : _buildLandscapePage();
+        }),
       ),
     );
   }
 
-  Widget _buildPage() {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final orientation = MediaQuery.of(context).orientation == Orientation.portrait || pageViewModel.singleColumn ? 1 : 2;
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minWidth: constraints.maxWidth, minHeight: constraints.maxHeight),
-            child: IntrinsicHeight(
-              child: orientation == 1
-                  ? Column(
-                      mainAxisAlignment: columnMainAxisAlignment,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Flexible(
-                          child: _ImagePageTransform(
-                            percentVisible: percentVisible,
-                            pageViewModel: pageViewModel,
-                          ),
-                        ),
-                        Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 32.0),
-                            child: _BodyPageTransform(
-                              percentVisible: percentVisible,
-                              pageViewModel: pageViewModel,
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  : Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        Expanded(
-                          child: _ImagePageTransform(
-                            percentVisible: percentVisible,
-                            pageViewModel: pageViewModel,
-                          ),
-                        ),
-                        Expanded(
-                          child: _BodyPageTransform(
-                            percentVisible: percentVisible,
-                            pageViewModel: pageViewModel,
-                          ),
-                        ),
-                      ],
-                    ),
+  Widget _buildPortraitPage() {
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: columnMainAxisAlignment,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 32.0),
+                child: _ImagePageTransform(
+                  percentVisible: percentVisible,
+                  pageViewModel: pageViewModel,
+                ),
+              ),
             ),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 64),
+                child: _BodyPageTransform(
+                  percentVisible: percentVisible,
+                  pageViewModel: pageViewModel,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLandscapePage() {
+    return Center(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 64),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              Expanded(
+                child: _ImagePageTransform(
+                  percentVisible: percentVisible,
+                  pageViewModel: pageViewModel,
+                ),
+              ),
+              Expanded(
+                child: _BodyPageTransform(
+                  percentVisible: percentVisible,
+                  pageViewModel: pageViewModel,
+                ),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
